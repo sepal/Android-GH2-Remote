@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/lytInterval"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp" >
+
+        <LinearLayout
+            android:id="@+id/lytIntervalMinute"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:gravity="center">
+
+            <TextView
+                android:id="@+id/lblMinute"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Min"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_plus" />
+
+            <EditText
+                android:id="@+id/txtEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" 
+                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/btnSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_minus" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lytIntervalSecond"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/lblSecond"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Sec"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_plus" />
+
+            <EditText
+                android:id="@+id/txtEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" 
+                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/btnSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_minus" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/lytIntervalMilis"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" android:layout_marginLeft="5dp" android:layout_marginRight="5dp" android:gravity="center">
+
+
+            <TextView
+                android:id="@+id/lblMilis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Mili"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+            <Button
+                android:id="@+id/btnAdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_plus" />
+
+            <EditText
+                android:id="@+id/txtEdit"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" 
+                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+
+                <requestFocus />
+            </EditText>
+
+            <Button
+                android:id="@+id/btnSub"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_minus" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
