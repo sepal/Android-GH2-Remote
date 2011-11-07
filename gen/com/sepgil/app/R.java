@@ -12,9 +12,13 @@ public final class R {
     }
     public static final class drawable {
         public static final int btn_minus=0x7f020000;
-        public static final int btn_plus=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int textfield=0x7f020003;
+        public static final int btn_minus_focus=0x7f020001;
+        public static final int btn_plus=0x7f020002;
+        public static final int btn_plus_focus=0x7f020003;
+        public static final int ic_launcher=0x7f020004;
+        public static final int textfield=0x7f020005;
+        public static final int textfield_getsfocus=0x7f020006;
+        public static final int textfield_hasfocus=0x7f020007;
     }
     public static final class id {
         public static final int LinearLayout01=0x7f050007;
