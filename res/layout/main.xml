@@ -132,7 +132,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_minus" />
+
         </LinearLayout>
+
     </LinearLayout>
 
     <TextView
@@ -178,8 +180,6 @@
                 android:layout_height="wrap_content"
                 android:inputType="number" 
                 android:background="@drawable/textfield" android:text="0" android:gravity="center">
-
-                <requestFocus />
             </EditText>
 
             <Button
@@ -245,19 +245,21 @@
                 android:gravity="center"
                 android:text="Mili"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
-            
+            
             <Button
-                android:id="@+id/txtShutterMilis"
+                android:id="@+id/btnShutterMilisAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@drawable/btn_plus" />
-
+
             <EditText
-                android:id="@+id/txtEdit"
+                android:id="@+id/txtShutterMilis"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" 
-                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+                android:background="@drawable/textfield"
+                android:gravity="center"
+                android:inputType="number"
+                android:text="0" >
 
                 <requestFocus />
             </EditText>
@@ -269,6 +271,7 @@
                 android:background="@drawable/btn_minus" />
 
         </LinearLayout>
+
     </LinearLayout>
 
     <TableLayout

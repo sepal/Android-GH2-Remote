@@ -1,13 +1,14 @@
 package com.sepgil.app;
 
-import android.util.Log;
+
+import android.text.InputFilter;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class NumberField {
 	public enum StateNumberField{
@@ -17,7 +18,6 @@ public class NumberField {
 	private Button btnSub;
 	private TextView txtNumber;
 	private int min, max;
-	
 	private StateNumberField state; 
 	
 	public NumberField (Button _btnAdd, Button _btnSub, TextView _txtNumber, int _min, int _max) {
@@ -27,13 +27,17 @@ public class NumberField {
 		min = _min;
 		max = _max;
 		
-		btnAdd.setOnTouchListener(onAdd);
-		//btnAdd.setOnClickListener(onAdd);
-		btnSub.setOnClickListener(onSubstract);
+		txtNumber.setFilters(new InputFilter[]{ new InputFilterMinMax(min, max)});
+		
+		btnAdd.setOnTouchListener(onAddTouch);
+		btnSub.setOnTouchListener(onSubTouch);
+		txtNumber.setOnKeyListener(onKeyListener);
 	}
 	
 	public synchronized void setVal(int number) {
-		txtNumber.setText(""+number);
+		if (number<max || number>min) {
+			txtNumber.setText(""+number);
+		}
 	}
 	
 	
@@ -47,34 +51,34 @@ public class NumberField {
 	
 	public void increase() {
 		int val = getVal();
-		if (val<=max) {
-			val--;
-			setVal(val++);
+		if (val<max) {
+			val++;
+			setVal(val);
 		}
 	}
 	
-	public void decrase() {
+	public void decrease() {
 		int val = getVal();
-		if (val>=0) {
+		if (val>min) {
 			val--;
-			setVal(val++);
+			setVal(val);
 		}
 	}
 	
-	public OnTouchListener onAdd =  new OnTouchListener() {
+	public OnTouchListener onAddTouch =  new OnTouchListener() {
 
 		@Override
 		public boolean onTouch(android.view.View arg0, android.view.MotionEvent arg1) {
 			switch ( arg1.getAction() ) {
 				case MotionEvent.ACTION_DOWN:
-					state = StateNumberField.INCREASE;
-					System.out.println("down");
+					System.out.println(txtNumber.requestFocus());
 					btnAdd.setBackgroundResource(R.drawable.btn_plus_focus);
+					increase();
 					break;
 				case MotionEvent.ACTION_UP:
 					btnAdd.setBackgroundResource(R.drawable.btn_plus);
-					state = StateNumberField.INACTIVE;
-					System.out.println("up");
+					if (change != null)
+						change.onChange();
 					break;
 			}
 			return true;
@@ -82,11 +86,40 @@ public class NumberField {
 		
 	};
 	
-	public OnClickListener onSubstract =  new OnClickListener() {
+	public OnTouchListener onSubTouch =  new OnTouchListener() {
 
 		@Override
-		public void onClick(View arg0) {
+		public boolean onTouch(android.view.View arg0, android.view.MotionEvent arg1) {
+			switch ( arg1.getAction() ) {
+				case MotionEvent.ACTION_DOWN:
+					txtNumber.requestFocus();
+					btnSub.setBackgroundResource(R.drawable.btn_minus_focus);
+					decrease();
+					break;
+				case MotionEvent.ACTION_UP:
+					btnSub.setBackgroundResource(R.drawable.btn_minus);
+					if (change != null)
+						change.onChange();
+					break;
+			}
+			return true;
 		}
-		
 	};
+	
+	public OnKeyListener onKeyListener = new OnKeyListener() {
+
+		@Override
+		public boolean onKey(View v, int keyCode, KeyEvent event) {
+			if (change != null)
+				change.onChange();
+			return false;
+		}
+	};
+	
+	public OnChangeListener change;
+	
+	
+	public void setOnChangeListener(OnChangeListener listener) {
+		change = listener;
+	}
 }

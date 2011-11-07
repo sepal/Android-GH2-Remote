@@ -38,6 +38,7 @@ public final class R {
         public static final int btnLoadConfig=0x7f050028;
         public static final int btnSaveConfig=0x7f050027;
         public static final int btnShutter=0x7f050025;
+        public static final int btnShutterMilisAdd=0x7f05001f;
         public static final int btnShutterMilisSub=0x7f050021;
         public static final int btnShutterMinuteAdd=0x7f050015;
         public static final int btnShutterMinuteSub=0x7f050017;
@@ -56,11 +57,10 @@ public final class R {
         public static final int tableRow1=0x7f050023;
         public static final int tableRow2=0x7f050026;
         public static final int textView1=0x7f050000;
-        public static final int txtEdit=0x7f050020;
         public static final int txtIntervalMilis=0x7f05000f;
         public static final int txtIntervalMinute=0x7f050005;
         public static final int txtIntervalSecond=0x7f05000a;
-        public static final int txtShutterMilis=0x7f05001f;
+        public static final int txtShutterMilis=0x7f050020;
         public static final int txtShutterMinute=0x7f050016;
         public static final int txtShutterSecond=0x7f05001b;
     }
