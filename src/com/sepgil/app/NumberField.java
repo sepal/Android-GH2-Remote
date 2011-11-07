@@ -72,11 +72,11 @@ public class NumberField {
 			switch ( arg1.getAction() ) {
 				case MotionEvent.ACTION_DOWN:
 					System.out.println(txtNumber.requestFocus());
-					btnAdd.setBackgroundResource(R.drawable.btn_plus_focus);
+					btnAdd.setBackgroundResource(R.drawable.timepicker_up_pressed);
 					increase();
 					break;
 				case MotionEvent.ACTION_UP:
-					btnAdd.setBackgroundResource(R.drawable.btn_plus);
+					btnAdd.setBackgroundResource(R.drawable.timepicker_up_normal);
 					if (change != null)
 						change.onChange();
 					break;
@@ -93,11 +93,11 @@ public class NumberField {
 			switch ( arg1.getAction() ) {
 				case MotionEvent.ACTION_DOWN:
 					txtNumber.requestFocus();
-					btnSub.setBackgroundResource(R.drawable.btn_minus_focus);
+					btnSub.setBackgroundResource(R.drawable.timepicker_down_pressed);
 					decrease();
 					break;
 				case MotionEvent.ACTION_UP:
-					btnSub.setBackgroundResource(R.drawable.btn_minus);
+					btnSub.setBackgroundResource(R.drawable.timepicker_down_normal);
 					if (change != null)
 						change.onChange();
 					break;

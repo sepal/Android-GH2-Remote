@@ -11,14 +11,25 @@ public final class R {
     public static final class attr {
     }
     public static final class drawable {
-        public static final int btn_minus=0x7f020000;
-        public static final int btn_minus_focus=0x7f020001;
-        public static final int btn_plus=0x7f020002;
-        public static final int btn_plus_focus=0x7f020003;
+        public static final int btn_default_normal=0x7f020000;
+        public static final int btn_default_pressed=0x7f020001;
+        public static final int btn_default_selected=0x7f020002;
+        public static final int btn_minus_focus=0x7f020003;
         public static final int ic_launcher=0x7f020004;
-        public static final int textfield=0x7f020005;
-        public static final int textfield_getsfocus=0x7f020006;
-        public static final int textfield_hasfocus=0x7f020007;
+        public static final int timepicker_down_disabled=0x7f020005;
+        public static final int timepicker_down_disabled_focused=0x7f020006;
+        public static final int timepicker_down_normal=0x7f020007;
+        public static final int timepicker_down_pressed=0x7f020008;
+        public static final int timepicker_down_selected=0x7f020009;
+        public static final int timepicker_input_disabled=0x7f02000a;
+        public static final int timepicker_input_normal=0x7f02000b;
+        public static final int timepicker_input_pressed=0x7f02000c;
+        public static final int timepicker_input_selected=0x7f02000d;
+        public static final int timepicker_up_disabled=0x7f02000e;
+        public static final int timepicker_up_disabled_focused=0x7f02000f;
+        public static final int timepicker_up_normal=0x7f020010;
+        public static final int timepicker_up_pressed=0x7f020011;
+        public static final int timepicker_up_selected=0x7f020012;
     }
     public static final class id {
         public static final int LinearLayout01=0x7f050007;

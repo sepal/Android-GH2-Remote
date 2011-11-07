@@ -56,8 +56,12 @@ public class Message extends Packet {
 	}
 	
 	public void set(Integer val, int index) {
-		arguments.set(index, val);
-		replaceArgString(index, 'i');
+		//if (index < arguments.size() && index >= 0) {
+		System.out.println(arguments.size());
+		System.out.println(index);
+			arguments.set(index, val);
+			replaceArgString(index, 'i');
+		//}
 	}
 	
 	public Object getArgument(int index) {

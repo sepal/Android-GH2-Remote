@@ -39,13 +39,13 @@
                 android:id="@+id/btnIntervalMinuteAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtIntervalMinute"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textfield"
+                android:background="@drawable/timepicker_input_normal"
                 android:gravity="center"
                 android:inputType="number" android:text="0"/>
 
@@ -53,7 +53,7 @@
                 android:id="@+id/btnIntervalMinuteSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -77,13 +77,13 @@
                 android:id="@+id/btnIntervalSecondAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtIntervalSecond"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textfield"
+                android:background="@drawable/timepicker_input_normal"
                 android:gravity="center"
                 android:inputType="number"
                 android:text="0" />
@@ -92,7 +92,7 @@
                 android:id="@+id/btnIntervalSecondSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
         </LinearLayout>
 
         <LinearLayout
@@ -116,13 +116,13 @@
                 android:id="@+id/btnIntervalMilisAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtIntervalMilis"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textfield"
+                android:background="@drawable/timepicker_input_normal"
                 android:gravity="center"
                 android:inputType="number"
                 android:text="0" />
@@ -131,7 +131,7 @@
                 android:id="@+id/btnIntervalMilisSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
 
         </LinearLayout>
 
@@ -172,21 +172,21 @@
                 android:id="@+id/btnShutterMinuteAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtShutterMinute"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" 
-                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+                android:background="@drawable/timepicker_input_normal" android:text="0" android:gravity="center">
             </EditText>
 
             <Button
                 android:id="@+id/btnShutterMinuteSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
 
         </LinearLayout>
 
@@ -210,14 +210,14 @@
                 android:id="@+id/btnShutterSecondAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtShutterSecond"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="number" 
-                android:background="@drawable/textfield" android:text="0" android:gravity="center">
+                android:background="@drawable/timepicker_input_normal" android:text="0" android:gravity="center">
 
                 <requestFocus />
             </EditText>
@@ -226,7 +226,7 @@
                 android:id="@+id/btnShutterSecondSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
 
         </LinearLayout>
 
@@ -250,13 +250,13 @@
                 android:id="@+id/btnShutterMilisAdd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_plus" />
+                android:background="@drawable/timepicker_up_normal" />
 
             <EditText
                 android:id="@+id/txtShutterMilis"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/textfield"
+                android:background="@drawable/timepicker_input_normal"
                 android:gravity="center"
                 android:inputType="number"
                 android:text="0" >
@@ -268,7 +268,7 @@
                 android:id="@+id/btnShutterMilisSub"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="@drawable/btn_minus" />
+                android:background="@drawable/timepicker_down_normal" />
 
         </LinearLayout>
 
