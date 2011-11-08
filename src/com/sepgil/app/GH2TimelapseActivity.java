@@ -8,6 +8,9 @@ import java.net.UnknownHostException;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -89,11 +92,38 @@ public class GH2TimelapseActivity extends Activity {
         msgShutter.add(0.0f);
 
         msgSave = new Message("/gh2/config/save");
-
         msgLoad = new Message("/gh2/config/load");
-        
         msgGet = new Message("/gh2/config/get");
-        connect();
+        
+
+		try {
+			slipIn = new SLIPUdpIn(2000);
+		} catch (SocketException e) {
+			displayToast("Error while trying to create listening socket.");
+		}
+		slipIn.startListening();
+		slipIn.setOnPacketArrived(onOscPacket);
+        connect("192.168.2.100");
+    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+        case R.id.mnuAndroidTether:
+            connect("192.168.2.100");
+        	break;
+        case R.id.mnuHomeApsep:
+        	connect("10.0.0.43");
+        	break;
+        }
+		return true;
     }
     
     /*@Override
@@ -102,14 +132,12 @@ public class GH2TimelapseActivity extends Activity {
     	//slipIn.stopListening();
     }*/
     
-    public void connect() {
+    public void connect(String host) {
         try {
 			//slipOut = new SLIPUdpOut("192.168.2.100", 2000);
 			//slipOut = new SLIPUdpOut("10.0.0.51", 2005);
-			slipOut = new SLIPUdpOut("10.0.0.43", 2000);
-			slipIn = new SLIPUdpIn(2000);
-			slipIn.startListening();
-			slipIn.setOnPacketArrived(onOscPacket);
+			//slipOut = new SLIPUdpOut("10.0.0.43", 2000);
+			slipOut = new SLIPUdpOut(host, 2000);
 			slipOut.send(msgGet);
 		} catch (SocketException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
