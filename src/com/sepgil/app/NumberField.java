@@ -42,7 +42,12 @@ public class NumberField {
 	
 	
 	public int getVal() {
-		return Integer.parseInt(txtNumber.getText().toString());
+		try {
+			return Integer.parseInt(txtNumber.getText().toString());
+		} catch (NumberFormatException e) {
+			setVal(0);
+			return 0;
+		}
 	}
 	
 	public StateNumberField getState() {
@@ -71,7 +76,7 @@ public class NumberField {
 		public boolean onTouch(android.view.View arg0, android.view.MotionEvent arg1) {
 			switch ( arg1.getAction() ) {
 				case MotionEvent.ACTION_DOWN:
-					System.out.println(txtNumber.requestFocus());
+					txtNumber.requestFocus();
 					btnAdd.setBackgroundResource(R.drawable.timepicker_up_pressed);
 					increase();
 					break;
@@ -116,10 +121,10 @@ public class NumberField {
 		}
 	};
 	
-	public OnChangeListener change;
+	public OnIntervalChangeListener change;
 	
 	
-	public void setOnChangeListener(OnChangeListener listener) {
+	public void setOnChangeListener(OnIntervalChangeListener listener) {
 		change = listener;
 	}
 }

@@ -19,7 +19,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.sepgil.osc.Debug;
 import com.sepgil.osc.Message;
+import com.sepgil.osc.OnPacketArrivedListener;
+import com.sepgil.osc.SLIPUdpIn;
 import com.sepgil.osc.SLIPUdpOut;
 
 public class GH2TimelapseActivity extends Activity {
@@ -30,17 +33,20 @@ public class GH2TimelapseActivity extends Activity {
 	private Button btnShoot;
 	private Button btnSaveConfig;
 	private Button btnLoadConfig;
+	private Button btnGetConfig;
 	
 	private SLIPUdpOut slipOut;
+	private SLIPUdpIn slipIn;
 	private boolean connected = false;
-	
-	private Message msgShoot;
-	private Message msgTimer;
-	private Message msgSave;
-	
+
 	private Message msgInterval;
 	private Message msgShutter;
+	
+	private Message msgShoot;
+	private Message msgStartTimer;
+	private Message msgSave;
 	private Message msgLoad;
+	private Message msgGet;
 	
 	
     /** Called when the activity is first created. */
@@ -62,18 +68,19 @@ public class GH2TimelapseActivity extends Activity {
         btnShoot = (Button)findViewById(R.id.btnShutter);
         btnSaveConfig = (Button)findViewById(R.id.btnSaveConfig);
         btnLoadConfig = (Button)findViewById(R.id.btnLoadConfig);
+        btnGetConfig = (Button)findViewById(R.id.btnGetConfig);
 
         btnTimer.setOnCheckedChangeListener(onTimerCheckChange);
         btnShoot.setOnTouchListener(onShootClick);
         btnSaveConfig.setOnClickListener(onSaveConfigClick);
         btnLoadConfig.setOnClickListener(onLoadConfigClick);
+        btnGetConfig.setOnClickListener(onGetConfigClick);
         
-        connect();
         msgShoot = new Message("/gh2/shutter");
         msgShoot.add(0);
         
-        msgTimer = new Message("/gh2/timelapse/start");
-        msgTimer.add(0);
+        msgStartTimer = new Message("/gh2/timelapse/start");
+        msgStartTimer.add(0);
         
         msgInterval = new Message("/gh2/timelapse/interval");
         msgInterval.add(0.0f);
@@ -82,32 +89,48 @@ public class GH2TimelapseActivity extends Activity {
         msgShutter.add(0.0f);
 
         msgSave = new Message("/gh2/config/save");
-        msgSave.add(0);
 
         msgLoad = new Message("/gh2/config/load");
-        msgLoad.add(0);
+        
+        msgGet = new Message("/gh2/config/get");
+        connect();
     }
+    
+    /*@Override
+    public void onPause() {
+    	//super.onPause();
+    	//slipIn.stopListening();
+    }*/
     
     public void connect() {
         try {
-			slipOut = new SLIPUdpOut("192.168.2.100", 2000);
-			connected = true;
+			//slipOut = new SLIPUdpOut("192.168.2.100", 2000);
+			//slipOut = new SLIPUdpOut("10.0.0.51", 2005);
+			slipOut = new SLIPUdpOut("10.0.0.43", 2000);
+			slipIn = new SLIPUdpIn(2000);
+			slipIn.startListening();
+			slipIn.setOnPacketArrived(onOscPacket);
+			slipOut.send(msgGet);
 		} catch (SocketException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
 			displayToast("Error while trying to create socket.");
 		} catch (UnknownHostException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
 			displayToast("Couln'd find time lapse host.");
+		} catch (IOException e) {
+			Log.e("gh2_timelapse_socket", e.toString());
+			displayToast("Error while trying to send get config message.");
 		}
     }
     
-    public OnChangeListener onIntervalChange = new OnChangeListener() {
+    public OnIntervalChangeListener onIntervalChange = new OnIntervalChangeListener() {
 		
 		@Override
 		public void onChange() {
-			msgTimer.set(timeInterval.getTime(), 0);
+			msgInterval.set(timeInterval.getTime(), 0);
 			try {
-				slipOut.send(msgTimer);
+				Debug.printBytes(msgInterval.getBytes());
+				slipOut.send(msgInterval);
 			} catch (IOException e) {
 				Log.e("gh2_timelapse_socket", e.toString());
 				displayToast("Error while trying to send timer message.");
@@ -115,13 +138,13 @@ public class GH2TimelapseActivity extends Activity {
 		}
 	};
     
-    public OnChangeListener onShutterChange = new OnChangeListener() {
+    public OnIntervalChangeListener onShutterChange = new OnIntervalChangeListener() {
 		
 		@Override
 		public void onChange() {
-			msgTimer.set(timeShutter.getTime(), 0);
+			msgShutter.set(timeShutter.getTime(), 0);
 			try {
-				slipOut.send(msgTimer);
+				slipOut.send(msgShutter);
 			} catch (IOException e) {
 				Log.e("gh2_timelapse_socket", e.toString());
 				displayToast("Error while trying to send timer message.");
@@ -135,11 +158,11 @@ public class GH2TimelapseActivity extends Activity {
 		public void onCheckedChanged(CompoundButton buttonView,
 				boolean isChecked) {
 			if (isChecked)
-				msgTimer.set(1, 0);
+				msgStartTimer.set(1, 0);
 			else
-				msgTimer.set(0, 0);
+				msgStartTimer.set(0, 0);
 			try {
-				slipOut.send(msgTimer);
+				slipOut.send(msgStartTimer);
 			} catch (IOException e) {
 				Log.e("gh2_timelapse_socket", e.toString());
 				displayToast("Error while trying to send timer message.");
@@ -181,11 +204,15 @@ public class GH2TimelapseActivity extends Activity {
 	};
 	
 	public OnClickListener onSaveConfigClick = new OnClickListener() {
-		
+
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
-			
+			try {
+				slipOut.send(msgSave);
+			} catch (IOException e) {
+				Log.e("gh2_timelapse_socket", e.toString());
+				displayToast("Error while trying to send save config message.");
+			}
 		}
 	};
 	
@@ -193,8 +220,50 @@ public class GH2TimelapseActivity extends Activity {
 		
 		@Override
 		public void onClick(View v) {
-			// TODO Auto-generated method stub
+			try {
+				slipOut.send(msgLoad);
+				slipOut.send(msgGet);
+			} catch (IOException e) {
+				Log.e("gh2_timelapse_socket", e.toString());
+				displayToast("Error while trying to send load & get config message.");
+			}
 			
+		}
+	};
+	
+	public OnClickListener onGetConfigClick = new OnClickListener() {
+		
+		@Override
+		public void onClick(View v) {
+			try {
+				slipOut.send(msgGet);
+			} catch (IOException e) {
+				Log.e("gh2_timelapse_socket", e.toString());
+				displayToast("Error while trying to send get config message.");
+			}
+		}
+	};
+	
+	public OnPacketArrivedListener onOscPacket = new OnPacketArrivedListener() {
+		
+		@Override
+		public void onPacketArrived(final Message msg) {
+			if (!connected) {
+				connected = true;
+				runOnUiThread(new Runnable() {
+				     public void run() {
+							setTitle("GH2 Timelapse - connected");
+				    }
+				});
+			}
+			if (msg.getAddress().equals("/gh2/config") && msg.getArgumentTypeString().equals(",ff")) {
+				runOnUiThread(new Runnable() {
+				     public void run() {
+							timeInterval.setTime((Float)msg.getArgument(0));
+							timeShutter.setTime((Float)msg.getArgument(1));
+				    }
+				});
+			}
 		}
 	};
     

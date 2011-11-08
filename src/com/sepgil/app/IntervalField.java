@@ -25,7 +25,7 @@ public class IntervalField {
 		time = (float)fldMinute.getVal() * 60 + (float)fldSecond.getVal() + ((float)fldMilis.getVal()/1000f);
 	}
 	
-	public OnChangeListener onMinuteChange = new OnChangeListener() {
+	public OnIntervalChangeListener onMinuteChange = new OnIntervalChangeListener() {
 		
 		@Override
 		public void onChange() {
@@ -35,7 +35,7 @@ public class IntervalField {
 		}
 	};
 	
-	public OnChangeListener onSecondChange = new OnChangeListener() {
+	public OnIntervalChangeListener onSecondChange = new OnIntervalChangeListener() {
 		
 		@Override
 		public void onChange() {
@@ -45,7 +45,7 @@ public class IntervalField {
 		}
 	};
 	
-	public OnChangeListener onMilisChange = new OnChangeListener() {
+	public OnIntervalChangeListener onMilisChange = new OnIntervalChangeListener() {
 		
 		@Override
 		public void onChange() {
@@ -55,13 +55,22 @@ public class IntervalField {
 		}
 	};
 	
-	public OnChangeListener onChange;
+	public OnIntervalChangeListener onChange;
 	
-	public void setOnChangeListener(OnChangeListener listener) {
+	public void setOnChangeListener(OnIntervalChangeListener listener) {
 		onChange = listener;
 	}
 
 	public float getTime() {
 		return time;
+	}
+
+	public void setTime(float time) {
+		int min = (int) (time/60);
+		int sec = (int)(time-min);
+		int mil = (int)((time-min-sec)*1000);
+		fldMinute.setVal(min);
+		fldSecond.setVal(sec);
+		fldMilis.setVal(mil);
 	}
 }

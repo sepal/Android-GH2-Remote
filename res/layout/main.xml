@@ -313,6 +313,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Load Config" />
+
+            <Button
+                android:id="@+id/btnGetConfig"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Get Config" />
 
         </TableRow>
     </TableLayout>

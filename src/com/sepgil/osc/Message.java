@@ -20,6 +20,11 @@ public class Message extends Packet {
 		argumentString = ",";
 	}
 	
+	public Message(byte[] data) throws IOException {
+		this.data = data;
+		arguments =  new ArrayList<Object>();
+		generateMessage();
+	}
 	public String getAddress() {
 		return address;
 	}
@@ -56,21 +61,17 @@ public class Message extends Packet {
 	}
 	
 	public void set(Integer val, int index) {
-		//if (index < arguments.size() && index >= 0) {
-		System.out.println(arguments.size());
-		System.out.println(index);
+		if (index < arguments.size() && index >= 0) {
 			arguments.set(index, val);
 			replaceArgString(index, 'i');
-		//}
+		}
 	}
 	
 	public void set(Float val, int index) {
-		//if (index < arguments.size() && index >= 0) {
-		System.out.println(arguments.size());
-		System.out.println(index);
+		if (index < arguments.size() && index >= 0) {
 			arguments.set(index, val);
 			replaceArgString(index, 'f');
-		//}
+		}
 	}
 	
 	public Object getArgument(int index) {
@@ -98,5 +99,23 @@ public class Message extends Packet {
 		}
 		data = byteStream.toByteArray();
 		generated = true;
+	}
+	
+	private void generateMessage() throws IOException {
+		address = generateString(data, 0);
+		argumentString = generateString(data, getStringByteSize(address));
+		int cIndex = getStringByteSize(address) + getStringByteSize(argumentString);
+		char[] argTypes = argumentString.toCharArray();
+		for (int i=1; i<argTypes.length;i++) {
+			switch (argTypes[i]) {
+			case 'f' :
+				arguments.add((Float)generateFloat(data, cIndex));
+				cIndex+=4;
+			}
+		}
+	}
+
+	public String getArgumentTypeString() {
+		return argumentString;
 	}
 }

@@ -40,6 +40,7 @@ public final class R {
         public static final int TextView02=0x7f050003;
         public static final int TextView03=0x7f050008;
         public static final int TextView04=0x7f050011;
+        public static final int btnGetConfig=0x7f050029;
         public static final int btnIntervalMilisAdd=0x7f05000e;
         public static final int btnIntervalMilisSub=0x7f050010;
         public static final int btnIntervalMinuteAdd=0x7f050004;
@@ -59,7 +60,7 @@ public final class R {
         public static final int lblMilis=0x7f05001e;
         public static final int lblMinute=0x7f050014;
         public static final int lblSecond=0x7f050019;
-        public static final int linearLayout1=0x7f050029;
+        public static final int linearLayout1=0x7f05002a;
         public static final int lytIntervalMilis=0x7f05001d;
         public static final int lytIntervalSecond=0x7f050018;
         public static final int lytRelease=0x7f050012;
