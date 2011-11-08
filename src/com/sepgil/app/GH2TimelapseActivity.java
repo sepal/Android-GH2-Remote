@@ -90,7 +90,7 @@ public class GH2TimelapseActivity extends Activity {
     
     public void connect() {
         try {
-			slipOut = new SLIPUdpOut("10.0.0.43", 2000);
+			slipOut = new SLIPUdpOut("192.168.2.100", 2000);
 			connected = true;
 		} catch (SocketException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
@@ -105,7 +105,13 @@ public class GH2TimelapseActivity extends Activity {
 		
 		@Override
 		public void onChange() {
-			
+			msgTimer.set(timeInterval.getTime(), 0);
+			try {
+				slipOut.send(msgTimer);
+			} catch (IOException e) {
+				Log.e("gh2_timelapse_socket", e.toString());
+				displayToast("Error while trying to send timer message.");
+			}
 		}
 	};
     
@@ -113,7 +119,13 @@ public class GH2TimelapseActivity extends Activity {
 		
 		@Override
 		public void onChange() {
-			
+			msgTimer.set(timeShutter.getTime(), 0);
+			try {
+				slipOut.send(msgTimer);
+			} catch (IOException e) {
+				Log.e("gh2_timelapse_socket", e.toString());
+				displayToast("Error while trying to send timer message.");
+			}
 		}
 	};
 	

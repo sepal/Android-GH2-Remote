@@ -64,6 +64,15 @@ public class Message extends Packet {
 		//}
 	}
 	
+	public void set(Float val, int index) {
+		//if (index < arguments.size() && index >= 0) {
+		System.out.println(arguments.size());
+		System.out.println(index);
+			arguments.set(index, val);
+			replaceArgString(index, 'f');
+		//}
+	}
+	
 	public Object getArgument(int index) {
 		return  arguments.get(index);
 	}
