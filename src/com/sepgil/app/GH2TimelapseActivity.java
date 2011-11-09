@@ -4,6 +4,8 @@ package com.sepgil.app;
 import java.io.IOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -40,7 +42,6 @@ public class GH2TimelapseActivity extends Activity {
 	
 	private SLIPUdpOut slipOut;
 	private SLIPUdpIn slipIn;
-	private boolean connected = false;
 
 	private Message msgInterval;
 	private Message msgShutter;
@@ -50,6 +51,9 @@ public class GH2TimelapseActivity extends Activity {
 	private Message msgSave;
 	private Message msgLoad;
 	private Message msgGet;
+	
+	private Timer pingTimer;
+	private Pinger pinger;
 	
 	
     /** Called when the activity is first created. */
@@ -103,7 +107,11 @@ public class GH2TimelapseActivity extends Activity {
 		}
 		slipIn.startListening();
 		slipIn.setOnPacketArrived(onOscPacket);
+        
+        pingTimer = new Timer("PingTimer");
+        
         connect("192.168.2.100");
+        pingTimer.schedule(pingTimeOut, 1000, 10000);
     }
     
     @Override
@@ -126,19 +134,23 @@ public class GH2TimelapseActivity extends Activity {
 		return true;
     }
     
-    /*@Override
+    @Override
     public void onPause() {
-    	//super.onPause();
-    	//slipIn.stopListening();
-    }*/
+    	super.onPause();
+    	slipIn.stopListening();
+    	pingTimer.cancel();
+    	pingTimer.purge();
+    }
     
     public void connect(String host) {
         try {
-			//slipOut = new SLIPUdpOut("192.168.2.100", 2000);
-			//slipOut = new SLIPUdpOut("10.0.0.51", 2005);
-			//slipOut = new SLIPUdpOut("10.0.0.43", 2000);
+        	if (pinger != null) {
+        		pinger.cancel();
+        	}
 			slipOut = new SLIPUdpOut(host, 2000);
 			slipOut.send(msgGet);
+	        pinger = new Pinger(slipOut);
+	        pingTimer.schedule(pinger, 1000, 5000);
 		} catch (SocketException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
 			displayToast("Error while trying to create socket.");
@@ -276,13 +288,9 @@ public class GH2TimelapseActivity extends Activity {
 		
 		@Override
 		public void onPacketArrived(final Message msg) {
-			if (!connected) {
-				connected = true;
-				runOnUiThread(new Runnable() {
-				     public void run() {
-							setTitle("GH2 Timelapse - connected");
-				    }
-				});
+			if (msg.getAddress().equals("/ping")) {
+				if (pinger != null)
+					pinger.setPingedBack(true);
 			}
 			if (msg.getAddress().equals("/gh2/config") && msg.getArgumentTypeString().equals(",ff")) {
 				runOnUiThread(new Runnable() {
@@ -294,6 +302,32 @@ public class GH2TimelapseActivity extends Activity {
 			}
 		}
 	};
+	
+	public TimerTask pingTimeOut = new TimerTask() {
+		
+		@Override
+		public void run() {
+			boolean state = pinger.hasPingedBack();
+			setConnectionTitle(state);
+		}
+	};
+	
+	public synchronized void setConnectionTitle(boolean connected) {
+		if (connected) {
+			runOnUiThread(new Runnable() {
+			      public void run() {
+						setTitle("GH2 Timelapse - connected");
+			      }
+		    });
+
+		} else {
+			runOnUiThread(new Runnable() {
+			      public void run() {
+						setTitle("GH2 Timelapse - disconnected");
+			      }
+		    });
+		}
+	}
     
     private void displayToast(String msg) {
          Toast.makeText(getBaseContext(), msg, 10).show();   
