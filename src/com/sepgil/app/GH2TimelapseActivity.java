@@ -54,6 +54,8 @@ public class GH2TimelapseActivity extends Activity {
 	
 	private Timer pingTimer;
 	private Pinger pinger;
+	private boolean newConnection;
+	private boolean changedTimer;
 	
 	
     /** Called when the activity is first created. */
@@ -98,20 +100,27 @@ public class GH2TimelapseActivity extends Activity {
         msgSave = new Message("/gh2/config/save");
         msgLoad = new Message("/gh2/config/load");
         msgGet = new Message("/gh2/config/get");
-        
+        changedTimer = false;
 
 		try {
 			slipIn = new SLIPUdpIn(2000);
 		} catch (SocketException e) {
 			displayToast("Error while trying to create listening socket.");
 		}
-		slipIn.startListening();
 		slipIn.setOnPacketArrived(onOscPacket);
-        
+
+		slipIn.startListening();
         pingTimer = new Timer("PingTimer");
-        
         connect("192.168.2.100");
-        pingTimer.schedule(pingTimeOut, 1000, 10000);
+        pingTimer.schedule(pingTimeOut, 2100, 4000);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    	slipIn.stopListening();
+    	pingTimer.cancel();
+    	pingTimer.purge();
     }
     
     @Override
@@ -131,35 +140,25 @@ public class GH2TimelapseActivity extends Activity {
         	connect("10.0.0.43");
         	break;
         }
+        
 		return true;
     }
     
-    @Override
-    public void onPause() {
-    	super.onPause();
-    	slipIn.stopListening();
-    	pingTimer.cancel();
-    	pingTimer.purge();
-    }
-    
     public void connect(String host) {
+    	newConnection = true;
         try {
         	if (pinger != null) {
         		pinger.cancel();
         	}
 			slipOut = new SLIPUdpOut(host, 2000);
-			slipOut.send(msgGet);
 	        pinger = new Pinger(slipOut);
-	        pingTimer.schedule(pinger, 1000, 5000);
+	        pingTimer.schedule(pinger, 1000, 2000);
 		} catch (SocketException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
 			displayToast("Error while trying to create socket.");
 		} catch (UnknownHostException e) {
 			Log.e("gh2_timelapse_socket", e.toString());
 			displayToast("Couln'd find time lapse host.");
-		} catch (IOException e) {
-			Log.e("gh2_timelapse_socket", e.toString());
-			displayToast("Error while trying to send get config message.");
 		}
     }
     
@@ -207,6 +206,7 @@ public class GH2TimelapseActivity extends Activity {
 				Log.e("gh2_timelapse_socket", e.toString());
 				displayToast("Error while trying to send timer message.");
 			}
+			changedTimer = true;
 			
 		}
 		
@@ -288,9 +288,31 @@ public class GH2TimelapseActivity extends Activity {
 		
 		@Override
 		public void onPacketArrived(final Message msg) {
-			if (msg.getAddress().equals("/ping")) {
-				if (pinger != null)
-					pinger.setPingedBack(true);
+			if (pinger != null) {
+				pinger.setPingedBack(true);
+				if (newConnection) {
+					try {
+						slipOut.send(msgGet);
+						newConnection = false;
+						
+						if (msg.getAddress().equals("/gh2/state") && msg.getArgumentTypeString().equals(",i")) {
+							if (!changedTimer) {
+								runOnUiThread(new Runnable() {
+								     public void run() {
+								    	 System.out.print("Timerstate: ");
+								    	 System.out.println(msg.getArgument(0));
+										btnTimer.setChecked(((Integer)msg.getArgument(0) == 1 ? true : false));
+								    }
+								});
+							} else {
+								changedTimer = false;
+							}
+						}
+					} catch (IOException e) {
+						Log.e("gh2_timelapse_socket", e.toString());
+						displayToast("Error while trying to send get config message on new connection.");
+					}
+				}
 			}
 			if (msg.getAddress().equals("/gh2/config") && msg.getArgumentTypeString().equals(",ff")) {
 				runOnUiThread(new Runnable() {

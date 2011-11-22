@@ -25,8 +25,11 @@ public class SLIPUdpIn extends SLIPPort implements Runnable {
 			try {
 				socket.receive(packet);
 				Message msg = generateMessage(packet);
-				if (packetArrivedListener != null)
+				if (packetArrivedListener != null && msg != null)
 					packetArrivedListener.onPacketArrived(msg);
+				else if (msg == null) {
+					System.out.println("Message null");
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

@@ -51,14 +51,21 @@ abstract class Packet {
 		
 	}
 	
-	protected float generateFloat(byte[] data, int from) throws IOException {
-		byte[] floatData = new byte[4];
+	private ByteBuffer generateByteBuffer(byte[] data, int from) {
+		byte[] byteData = new byte[4];
 		int j=0;
 		for (int i=from; i<from+3; i++) {
-			floatData[j++] = data[i];
+			byteData[j++] = data[i];
 		}
-		ByteBuffer buffer = ByteBuffer.wrap(floatData);
-		return buffer.getFloat();
+		return ByteBuffer.wrap(byteData);
+	}
+	
+	protected float generateFloat(byte[] data, int from) throws IOException {
+		return generateByteBuffer(data, from).getFloat();
+	}
+
+	protected int generateInt(byte[] data, int from) {
+		return generateByteBuffer(data, from).getInt();
 	}
 	
 	public byte[] getBytes() throws IOException {

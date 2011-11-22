@@ -111,6 +111,9 @@ public class Message extends Packet {
 			case 'f' :
 				arguments.add((Float)generateFloat(data, cIndex));
 				cIndex+=4;
+				break;
+			case 'i':
+				arguments.add((int) generateInt(data, cIndex));
 			}
 		}
 	}

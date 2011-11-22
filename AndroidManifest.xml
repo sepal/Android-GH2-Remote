@@ -3,7 +3,6 @@
     package="com.sepgil.app"
     android:versionCode="1"
     android:versionName="1.0" >
-    android:screenOrientation="portrait"
 
     <uses-sdk android:minSdkVersion="7" />
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -13,7 +12,9 @@
         android:label="@string/app_name" >
         <activity
             android:label="@string/app_name"
-            android:name=".GH2TimelapseActivity" >
+            android:name=".GH2TimelapseActivity" 
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
             <intent-filter >
                 <action android:name="android.intent.action.MAIN" />
 
